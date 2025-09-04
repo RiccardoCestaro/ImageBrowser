@@ -7,12 +7,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.riccardo.imagebrowser.presentation.ui.theme.ImageBrowserTheme
 import dagger.hilt.android.AndroidEntryPoint
+
+
+val LocalNavController = compositionLocalOf<NavHostController> { error("No nav controller") }
+val LocalSearchViewModel = compositionLocalOf<SearchViewModel> {
+    error("No SearchViewModel provided")
+}
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -21,26 +31,28 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ImageBrowserTheme {
-
                 val navController = rememberNavController()
+                val searchViewModel: SearchViewModel = hiltViewModel()
+                CompositionLocalProvider(
+                    values = arrayOf(
+                        LocalNavController provides navController,
+                        LocalSearchViewModel provides searchViewModel
+                    )
+                ) {
+                    Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
 
-                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
-
-                    NavHost(
-                        navController = navController,
-                        startDestination = SearchScreen,
-                        modifier = Modifier.Companion.padding(innerPadding)
-                    ) {
-                        composable<SearchScreen> {
-                            SearchScreen(
-                                query = "",
-                                onQueryChange = {},
-                                onSearch = {},
-                                searchResults = emptyList(),
-                                onResultClick = {})
-                        }
-                        composable<DetailsScreen> {
-                            DetailsScreen()
+                        NavHost(
+                            navController = navController,
+                            startDestination = SearchScreen,
+                            modifier = Modifier.Companion.padding(innerPadding)
+                        ) {
+                            composable<SearchScreen> {
+                                SearchScreen(
+                                    onResultClick = {})
+                            }
+                            composable<DetailsScreen> {
+                                DetailsScreen()
+                            }
                         }
                     }
                 }
