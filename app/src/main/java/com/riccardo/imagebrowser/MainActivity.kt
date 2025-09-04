@@ -14,7 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.riccardo.imagebrowser.presentation.DetailsScreen
 import com.riccardo.imagebrowser.presentation.SearchScreen
 import com.riccardo.imagebrowser.presentation.ui.theme.ImageBrowserTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
