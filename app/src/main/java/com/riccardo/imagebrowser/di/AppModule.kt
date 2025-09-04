@@ -2,6 +2,7 @@ package com.riccardo.imagebrowser.di
 
 import com.google.gson.GsonBuilder
 import com.riccardo.imagebrowser.BuildConfig
+import com.riccardo.imagebrowser.data.service.SearchApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,5 +46,13 @@ object AppModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
+
+    @Provides
+    @Singleton
+    fun provideSearchApiService(
+        retrofit: Retrofit,
+    ): SearchApiService {
+        return retrofit.create(SearchApiService::class.java)
+    }
 
 }
