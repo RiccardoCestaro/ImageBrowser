@@ -1,6 +1,7 @@
 package com.riccardo.imagebrowser.di
 
 import com.google.gson.GsonBuilder
+import com.riccardo.imagebrowser.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +26,10 @@ object AppModule {
                         "Accept-Version",
                         "v1"
                     ) // set accept version to v1 as described in the Unsplash documentation
+                    .addHeader(
+                        "Authorization",
+                        "Client-ID ${BuildConfig.ACCESS_KEY}"
+                    ) // set the access key
                     .build()
                 chain.proceed(request)
             }
