@@ -1,6 +1,6 @@
 [versions]
 agp = "8.12.2"
-kotlin = "2.0.21"
+kotlin = "2.2.10"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -12,6 +12,7 @@ navigationCompose = "2.9.3"
 retrofit = "3.0.0"
 hilt = "2.57.1"
 hiltNavigationCompose = "1.2.0"
+ksp = "2.2.10-2.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,4 +40,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
