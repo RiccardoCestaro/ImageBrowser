@@ -2,7 +2,9 @@ package com.riccardo.imagebrowser.di
 
 import com.google.gson.GsonBuilder
 import com.riccardo.imagebrowser.BuildConfig
+import com.riccardo.imagebrowser.data.repository.SearchRepositoryImpl
 import com.riccardo.imagebrowser.data.service.SearchApiService
+import com.riccardo.imagebrowser.domain.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,5 +56,12 @@ object AppModule {
     ): SearchApiService {
         return retrofit.create(SearchApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideSearchRepository(
+        searchApiService: SearchApiService
+    ): SearchRepository =
+        SearchRepositoryImpl(searchApiService)
 
 }
