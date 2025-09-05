@@ -4,12 +4,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.riccardo.imagebrowser.domain.usecases.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor() : ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val searchUseCase: SearchUseCase
+) : ViewModel() {
 
     companion object {
         private const val TAG = "SearchViewModel"
@@ -25,13 +29,13 @@ class SearchViewModel @Inject constructor() : ViewModel() {
 
     fun search() {
         viewModelScope.launch {
-            /*_uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
 
             runCatching {
                 searchUseCase(_uiState.value.query)
             }.onSuccess { results ->
                 _uiState.value = _uiState.value.copy(
-                    searchResults = results,
+                    searchResults = results.first().results,
                     isLoading = false
                 )
             }.onFailure { e ->
@@ -39,13 +43,8 @@ class SearchViewModel @Inject constructor() : ViewModel() {
                     isLoading = false,
                     errorMessage = e.message
                 )
-            }*/
+            }
         }
-    }
-
-    init {
-
-
     }
 
 }
