@@ -21,6 +21,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "ACCESS_KEY", "\"access_key\"")
+        buildConfigField("Boolean", "DEBUG", "true")
     }
 
     buildTypes {
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
     implementation(libs.converter.gson)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
