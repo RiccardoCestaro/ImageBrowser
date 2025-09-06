@@ -15,20 +15,21 @@ class SearchRepositoryImpl(private val searchApiService: SearchApiService) : Sea
         const val TAG = "SearchRepositoryImpl"
     }
 
-    override suspend fun searchImages(query: String): Flow<Result<SearchResponse>> = flow {
-        val response = searchApiService.search(query)
-        Log.d(TAG, "searchImages() response: $response")
+    override suspend fun searchImages(query: String, page: Int): Flow<Result<SearchResponse>> =
+        flow {
+            val response = searchApiService.search(query, page)
+            Log.d(TAG, "searchImages() response: $response")
 
-        if (response.isSuccessful) {
-            response.body()?.let {
-                emit(Result.success(it))
-            } ?: run {
-                emit(Result.failure(HttpException(response))) // body null
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(Result.success(it))
+                } ?: run {
+                    emit(Result.failure(HttpException(response))) // body null
+                }
+            } else {
+                emit(Result.failure(HttpException(response)))
             }
-        } else {
-            emit(Result.failure(HttpException(response)))
+        }.catch { e ->
+            emit(Result.failure(e))
         }
-    }.catch { e ->
-        emit(Result.failure(e))
-    }
 }

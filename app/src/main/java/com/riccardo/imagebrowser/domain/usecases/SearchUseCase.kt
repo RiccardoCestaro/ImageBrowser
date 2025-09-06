@@ -1,6 +1,5 @@
 package com.riccardo.imagebrowser.domain.usecases
 
-import android.util.Log
 import com.riccardo.imagebrowser.data.model.SearchResponse
 import com.riccardo.imagebrowser.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,12 +11,9 @@ class SearchUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
 
-    suspend operator fun invoke(query: String): Flow<SearchResponse> =
-        repository.searchImages(query)
+    suspend operator fun invoke(query: String, page: Int): Flow<SearchResponse> =
+        repository.searchImages(query, page)
             .map { result ->
-                result.onSuccess { content ->
-                    Log.d("SearchUseCase", "invoke: $content")
-                }
                 result.getOrThrow()
             }
             .catch { e ->

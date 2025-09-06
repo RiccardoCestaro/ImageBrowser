@@ -7,5 +7,5 @@ interface SearchRepository {
     /**
      * [searchImages] returns a [Flow] of [Result] of [SearchResponse]
      */
-    suspend fun searchImages(query: String): Flow<Result<SearchResponse>>
+    suspend fun searchImages(query: String, page: Int): Flow<Result<SearchResponse>>
 }
