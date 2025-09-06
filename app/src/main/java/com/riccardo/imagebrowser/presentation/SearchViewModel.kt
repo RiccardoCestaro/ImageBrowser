@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.riccardo.imagebrowser.domain.usecases.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,8 +36,8 @@ class SearchViewModel @Inject constructor(
             }.onSuccess { results ->
                 _uiState.value = _uiState.value.copy(
                     page = _uiState.value.page + 1,
-                    searchResults = _uiState.value.searchResults + results.map { it.results }
-                        .first()
+                    searchResults = _uiState.value.searchResults + results.results
+
                 )
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(
@@ -55,9 +53,10 @@ class SearchViewModel @Inject constructor(
 
             runCatching {
                 searchUseCase(_uiState.value.query, 1)
-            }.onSuccess { results ->
+            }.onSuccess { response ->
                 _uiState.value = _uiState.value.copy(
-                    searchResults = results.map { it.results }.first().toMutableList(),
+                    searchResults = response.results,
+                    totalPages = response.totalPages,
                     isLoading = false
                 )
             }.onFailure { e ->

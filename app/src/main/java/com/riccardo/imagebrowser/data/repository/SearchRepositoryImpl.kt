@@ -4,9 +4,6 @@ import android.util.Log
 import com.riccardo.imagebrowser.data.model.SearchResponse
 import com.riccardo.imagebrowser.data.service.SearchApiService
 import com.riccardo.imagebrowser.domain.repository.SearchRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 
 class SearchRepositoryImpl(private val searchApiService: SearchApiService) : SearchRepository {
@@ -15,21 +12,20 @@ class SearchRepositoryImpl(private val searchApiService: SearchApiService) : Sea
         const val TAG = "SearchRepositoryImpl"
     }
 
-    override suspend fun searchImages(query: String, page: Int): Flow<Result<SearchResponse>> =
-        flow {
+    override suspend fun searchImages(query: String, page: Int): Result<SearchResponse> {
+        return try {
             val response = searchApiService.search(query, page)
             Log.d(TAG, "searchImages() response: $response")
 
             if (response.isSuccessful) {
                 response.body()?.let {
-                    emit(Result.success(it))
-                } ?: run {
-                    emit(Result.failure(HttpException(response))) // body null
-                }
+                    Result.success(it)
+                } ?: Result.failure(HttpException(response)) // body null
             } else {
-                emit(Result.failure(HttpException(response)))
+                Result.failure(HttpException(response))
             }
-        }.catch { e ->
-            emit(Result.failure(e))
+        } catch (e: Exception) {
+            Result.failure(e)
         }
+    }
 }
