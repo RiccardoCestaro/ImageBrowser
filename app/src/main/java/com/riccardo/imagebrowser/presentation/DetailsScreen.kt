@@ -1,6 +1,5 @@
 package com.riccardo.imagebrowser.presentation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
+import com.riccardo.imagebrowser.R
+import com.riccardo.imagebrowser.presentation.utils.debugPlaceholder
 
 @Composable
 fun DetailsScreen(
@@ -36,7 +37,6 @@ fun DetailsScreen(
     val navController = LocalNavController.current
     val searchViewModel = LocalSearchViewModel.current
     val photo = searchViewModel.uiState.value.searchResults.find { it.id == id }
-    Log.d("DetailsScreen", "DetailsScreen: $photo")
     photo?.let {
         Box(
             modifier = Modifier.systemBarsPadding()
@@ -59,6 +59,7 @@ fun DetailsScreen(
                 AsyncImage(
                     model = photo.urls.regular,
                     contentDescription = photo.altDescription,
+                    placeholder = debugPlaceholder(R.drawable.placeholder),
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -73,6 +74,7 @@ fun DetailsScreen(
                 ) {
                     AsyncImage(
                         model = photo.user.profileImage.medium,
+                        placeholder = debugPlaceholder(R.drawable.placeholder),
                         contentDescription = photo.user.name,
                         modifier = Modifier
                             .size(40.dp)

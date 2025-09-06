@@ -20,17 +20,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.riccardo.imagebrowser.R
 import com.riccardo.imagebrowser.data.model.Photo
+import com.riccardo.imagebrowser.data.model.ProfileImage
+import com.riccardo.imagebrowser.data.model.Urls
+import com.riccardo.imagebrowser.data.model.User
 import com.riccardo.imagebrowser.presentation.LocalNavController
 import com.riccardo.imagebrowser.presentation.utils.DetailsScreen
+import com.riccardo.imagebrowser.presentation.utils.debugPlaceholder
 
 @Composable
 fun ImageItem(photo: Photo) {
-    val navController = LocalNavController.current
-
+    val navController =
+    if (LocalInspectionMode.current) {
+        rememberNavController()
+    } else {
+        LocalNavController.current
+    }
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth(),
@@ -41,6 +55,7 @@ fun ImageItem(photo: Photo) {
             AsyncImage(
                 model = photo.urls.small,
                 contentDescription = photo.altDescription,
+                placeholder = debugPlaceholder(R.drawable.placeholder),
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,6 +74,7 @@ fun ImageItem(photo: Photo) {
                 AsyncImage(
                     model = photo.user.profileImage.medium,
                     contentDescription = photo.user.name,
+                    placeholder = debugPlaceholder(R.drawable.placeholder),
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
@@ -83,4 +99,41 @@ fun ImageItem(photo: Photo) {
     }
 
 
+}
+
+
+@Preview
+@Composable
+fun ImageItemPreview() {
+    val samplePhoto = Photo(
+        id = "SRbhuvsSeR0",
+        width = 3000,
+        height = 1768,
+        description = "Sample description",
+        altDescription = "A sign that says need to get the word out",
+
+        urls = Urls(
+            raw = "",
+            full = "",
+            regular = "",
+            small = "",
+            thumb = "",
+            smallS3 = ""
+        ),
+        user = User(
+            id = "-myGpytHnPo",
+            username = "jontyson",
+            name = "Jon Tyson",
+            firstName = "Jon",
+            lastName = "Tyson",
+            profileImage = ProfileImage(
+                medium = "",
+            ),
+            portfolioUrl = "",
+            bio = "",
+            location = ""
+        )
+    )
+
+    ImageItem(photo = samplePhoto)
 }
