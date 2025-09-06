@@ -1,4 +1,4 @@
-package com.riccardo.imagebrowser.presentation
+package com.riccardo.imagebrowser.presentation.utils
 
 import kotlinx.serialization.Serializable
 
@@ -8,4 +8,4 @@ interface Screen
 object SearchScreen : Screen
 
 @Serializable
-object DetailsScreen : Screen
+data class DetailsScreen(val photoId: String?) : Screen

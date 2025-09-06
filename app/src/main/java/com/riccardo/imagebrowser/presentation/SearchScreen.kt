@@ -30,7 +30,7 @@ import com.riccardo.imagebrowser.presentation.components.ImageItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    onResultClick: (String) -> Unit,
+    innerPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
 
@@ -41,6 +41,7 @@ fun SearchScreen(
     Column(
         modifier
             .fillMaxSize()
+            .padding(innerPadding)
             .semantics { isTraversalGroup = true },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)

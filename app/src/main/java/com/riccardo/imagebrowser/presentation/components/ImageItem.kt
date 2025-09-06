@@ -24,9 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.riccardo.imagebrowser.data.model.Photo
+import com.riccardo.imagebrowser.presentation.LocalNavController
+import com.riccardo.imagebrowser.presentation.utils.DetailsScreen
 
 @Composable
 fun ImageItem(photo: Photo) {
+    val navController = LocalNavController.current
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -43,6 +46,7 @@ fun ImageItem(photo: Photo) {
                     .fillMaxWidth()
                     .clickable {
                         Log.d("ImageItem", "ImageItem: ${photo.urls.small}")
+                        navController.navigate(DetailsScreen(photo.id))
                     }
             )
 
@@ -66,11 +70,13 @@ fun ImageItem(photo: Photo) {
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
-                    Text(
-                        text = photo.description.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1
-                    )
+                    photo.description?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1
+                        )
+                    }
                 }
             }
         }
